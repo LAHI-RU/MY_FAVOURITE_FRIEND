@@ -85,20 +85,31 @@ document.addEventListener("DOMContentLoaded", function() {
     // Music control
     let musicPlaying = false;
     
+    // Try to autoplay music immediately
+    playMusic();
+    
+    // But also provide manual control
     musicToggle.addEventListener("click", function() {
         if (musicPlaying) {
             bgMusic.pause();
             musicToggle.textContent = "🔇";
             musicPlaying = false;
         } else {
-            bgMusic.play().catch(e => {
-                console.log("Audio play failed:", e);
-                alert("Please click again to play music. Browser may require user interaction first.");
-            });
-            musicToggle.textContent = "🎵";
-            musicPlaying = true;
+            playMusic();
         }
     });
+    
+    // Function to play music
+    function playMusic() {
+        bgMusic.play().then(() => {
+            musicToggle.textContent = "🎵";
+            musicPlaying = true;
+        }).catch(e => {
+            console.log("Audio play failed:", e);
+            musicToggle.textContent = "🔇";
+            // We'll silently fail on autoplay - user can click button if needed
+        });
+    }
     
     // Surprise button
     openBtn.addEventListener("click", function() {
@@ -106,9 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
         specialModal.classList.add("active");
         
         if (!musicPlaying) {
-            bgMusic.play().catch(e => console.log("Audio play failed:", e));
-            musicToggle.textContent = "🎵";
-            musicPlaying = true;
+            playMusic();
         }
     });
     
@@ -134,19 +143,41 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    // GSAP Animations
-    gsap.from(".card", {duration: 1, y: 50, opacity: 0, ease: "back.out(1.7)"});
-    gsap.from(".birthday-text", {duration: 1, delay: 0.5, scale: 0.5, opacity: 0, ease: "elastic.out(1, 0.5)"});
-    gsap.from(".message", {duration: 0.8, delay: 0.8, y: 20, opacity: 0});
-    gsap.from(".buttons", {duration: 0.8, delay: 1, y: 20, opacity: 0, stagger: 0.2});
+    // GSAP Animations - Faster and with improved timing
+    gsap.from(".card", {duration: 0.8, y: 30, opacity: 0, ease: "back.out(1.7)"});
+    gsap.from(".birthday-text", {duration: 0.8, delay: 0.3, scale: 0.5, opacity: 0, ease: "elastic.out(1, 0.5)"});
+    gsap.from(".message", {duration: 0.6, delay: 0.6, y: 20, opacity: 0});
+    gsap.from(".buttons", {duration: 0.6, delay: 0.8, y: 20, opacity: 0, stagger: 0.1});
     
-    // Animated cake elements
-    gsap.from(".cake", {duration: 1.5, delay: 0.3, y: 50, opacity: 0, ease: "elastic.out(1, 0.5)"});
-    gsap.from(".cake-bottom", {duration: 0.8, delay: 0.5, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".cake-middle", {duration: 0.8, delay: 0.7, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".cake-top", {duration: 0.8, delay: 0.9, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".candle", {duration: 0.5, delay: 1.1, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".flame", {duration: 0.5, delay: 1.3, scale: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
+    // Animated cake elements - faster animations
+    gsap.from(".cake", {duration: 1, delay: 0.2, y: 30, opacity: 0, ease: "elastic.out(1, 0.5)"});
+    gsap.from(".cake-bottom", {duration: 0.6, delay: 0.3, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
+    gsap.from(".cake-middle", {duration: 0.6, delay: 0.4, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
+    gsap.from(".cake-top", {duration: 0.6, delay: 0.5, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
+    
+    // Animation for multiple candles
+    const candles = document.querySelectorAll('.candle');
+    candles.forEach((candle, index) => {
+        gsap.from(candle, {
+            duration: 0.4, 
+            delay: 0.6 + (index * 0.1),
+            scaleY: 0, 
+            transformOrigin: "bottom", 
+            ease: "back.out(1.7)"
+        });
+    });
+    
+    // Animation for flames
+    const flames = document.querySelectorAll('.flame');
+    flames.forEach((flame, index) => {
+        gsap.from(flame, {
+            duration: 0.4, 
+            delay: 0.8 + (index * 0.1),
+            scale: 0, 
+            transformOrigin: "bottom", 
+            ease: "back.out(1.7)"
+        });
+    });
     
     // Confetti function
     function createConfetti() {
@@ -190,20 +221,23 @@ document.addEventListener("DOMContentLoaded", function() {
     function animateBalloons() {
         const balloons = document.querySelectorAll('.balloon');
         balloons.forEach((balloon, index) => {
-            const delay = index * 2; // Staggered start
+            const delay = index * 1; // Reduced staggered delay
+            const randomLeft = 10 + (index * 20) + (Math.random() * 5);
+            
+            balloon.style.left = `${randomLeft}%`;
             
             gsap.fromTo(balloon,
                 { y: '100vh', opacity: 0 },
                 { 
                     y: '-100vh', 
                     opacity: 0.8,
-                    duration: 15 + Math.random() * 5,
+                    duration: 12 + Math.random() * 5, // Faster animation
                     delay: delay,
                     ease: "power1.inOut",
                     repeat: -1,
                     onRepeat: function() {
                         // Randomize horizontal position slightly on each repeat
-                        const newLeft = parseFloat(balloon.style.left) + (Math.random() * 10 - 5) + '%';
+                        const newLeft = parseFloat(balloon.style.left) + (Math.random() * 6 - 3) + '%';
                         balloon.style.left = newLeft;
                     }
                 }
@@ -214,15 +248,12 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initialize balloon animations
     animateBalloons();
     
-    // Create initial animation on load
+    // Create initial confetti animation with reduced delay
     setTimeout(function() {
         createConfetti();
-    }, 1500);
+    }, 1000);
     
     // Add window resize handler
     window.addEventListener('resize', function() {
         const canvas = document.getElementById("particles-js");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    });
-});
+        canvas.width =
