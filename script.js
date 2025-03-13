@@ -83,26 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const closeModal = document.querySelector(".close-modal");
     const card = document.querySelector(".card");
     const birthdayText = document.querySelector(".birthday-text");
-    const cakeContainer = document.querySelector(".cake-container");
-    const cake = document.querySelector(".cake");
-    
-    // Reposition cake and candles creatively outside the box
-    function repositionCake() {
-        // Move cake to top-right corner of the screen
-        cakeContainer.style.left = "auto";
-        cakeContainer.style.right = "5%";
-        cakeContainer.style.top = "10%";
-        cakeContainer.style.transform = "rotate(5deg)";
-        
-        // Add floating animation
-        gsap.to(cakeContainer, {
-            y: 10,
-            duration: 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-        });
-    }
+    const giftBoxContainer = document.querySelector(".gift-box-container");
     
     // Center birthday text and card properly
     function centerElements() {
@@ -206,21 +187,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    // Reposition candles for better appearance
-    function repositionCandles() {
-        const candles = document.querySelectorAll('.candle');
-        const cakeTop = document.querySelector('.cake-top');
-        
-        if (cakeTop && candles.length) {
-            const cakeTopWidth = cakeTop.offsetWidth;
-            const spacing = cakeTopWidth / 6;
-            
-            candles[0].style.left = `${spacing}px`;
-            candles[1].style.left = `${spacing * 3}px`;
-            candles[2].style.left = `${spacing * 5}px`;
-        }
-    }
-    
     // GSAP Animations with improved timing and flow
     gsap.from(".card", {duration: 0.6, y: 30, opacity: 0, ease: "back.out(1.7)"});
     gsap.from(".birthday-text", {
@@ -247,52 +213,13 @@ document.addEventListener("DOMContentLoaded", function() {
     gsap.from(".message", {duration: 0.5, delay: 0.3, y: 20, opacity: 0});
     gsap.from(".buttons", {duration: 0.5, delay: 0.5, y: 20, opacity: 0, stagger: 0.1});
     
-    // Animated cake elements with dramatic entrance
-    gsap.from(".cake", {
+    // Gift box animation
+    gsap.from(".gift-box-container", {
         duration: 1.2, 
         y: -100, 
         opacity: 0, 
         ease: "bounce.out",
-        delay: 0.2,
-        onComplete: function() {
-            repositionCandles();
-            repositionCake();
-        }
-    });
-    
-    // Animation for candles
-    const candles = document.querySelectorAll('.candle');
-    candles.forEach((candle, index) => {
-        gsap.from(candle, {
-            duration: 0.4, 
-            delay: 1.5 + (index * 0.1),
-            scaleY: 0, 
-            transformOrigin: "bottom", 
-            ease: "back.out(1.7)"
-        });
-    });
-    
-    // Animation for flames with staggered appearance
-    const flames = document.querySelectorAll('.flame');
-    flames.forEach((flame, index) => {
-        gsap.from(flame, {
-            duration: 0.4, 
-            delay: 2 + (index * 0.2),
-            scale: 0, 
-            transformOrigin: "bottom", 
-            ease: "back.out(1.7)"
-        });
-        
-        // Add perpetual random flicker to flames
-        gsap.to(flame, {
-            duration: 0.3 + Math.random() * 0.5,
-            scaleX: 0.8 + Math.random() * 0.4,
-            scaleY: 0.8 + Math.random() * 0.4,
-            rotation: -5 + Math.random() * 10,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-        });
+        delay: 0.2
     });
     
     // Improved confetti function
@@ -335,7 +262,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Ensure layout is responsive and elements are properly centered
     window.addEventListener('resize', function() {
         centerElements();
-        repositionCake();
     });
     
     // Initialize layout
