@@ -32,9 +32,10 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: calc(100vh - 180px); /* Adjusted for cake space */
     padding: 20px;
     box-sizing: border-box;
+    margin-top: 150px; /* Make space for the floating cake */
 }
 
 .card {
@@ -287,19 +288,32 @@ body {
     100% { transform: translateY(-1600px) rotate(-5deg); opacity: 0; }
 }
 
-/* Cake Animation Styles - Updated */
+/* Cake Animation Styles - Updated for outside positioning */
 .cake-container {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 300px;
+    height: 150px;
     display: flex;
     justify-content: center;
-    margin: 30px 0;
+    align-items: flex-end;
+    z-index: 15;
 }
 
 .cake {
     position: relative;
-    width: 120px;
-    height: 100px;
-    margin: 0 auto;
+    width: 140px;
+    height: 120px;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+    animation: cakeFloat 3s ease-in-out infinite;
+}
+
+@keyframes cakeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 .cake-bottom {
@@ -340,7 +354,7 @@ body {
     width: 100%;
     bottom: 105px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     z-index: 2;
 }
 
@@ -350,7 +364,6 @@ body {
     height: 30px;
     background: linear-gradient(to right, #ffffff, #f0f0f0);
     border-radius: 5px;
-    margin: 0 10px;
 }
 
 .candle-left {
@@ -443,6 +456,15 @@ body {
 
 /* Responsive styles - Improved */
 @media (max-width: 768px) {
+    .container {
+        margin-top: 120px;
+    }
+    
+    .cake {
+        width: 120px;
+        height: 100px;
+    }
+    
     .card {
         padding: 30px 20px;
         width: 95%;
@@ -486,18 +508,21 @@ body {
         bottom: -60px;
     }
     
-    .cake {
-        width: 100px;
-        height: 80px;
-        transform: scale(0.9);
-    }
-    
     .modal-content {
         padding: 30px 20px;
     }
 }
 
 @media (max-width: 480px) {
+    .container {
+        margin-top: 100px;
+    }
+    
+    .cake {
+        width: 100px;
+        height: 80px;
+    }
+    
     .card {
         padding: 25px 15px;
     }
@@ -509,10 +534,6 @@ body {
     .message {
         font-size: 1em;
         margin: 20px 0;
-    }
-    
-    .cake {
-        transform: scale(0.8);
     }
     
     .candle {

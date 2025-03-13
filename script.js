@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const closeModal = document.querySelector(".close-modal");
     const card = document.querySelector(".card");
     const birthdayText = document.querySelector(".birthday-text");
+    const cake = document.querySelector(".cake");
     
     // Center birthday text and card properly
     function centerElements() {
@@ -100,17 +101,13 @@ document.addEventListener("DOMContentLoaded", function() {
         birthdayText.style.textAlign = "center";
     }
     
-    // Run centering on load and resize
-    centerElements();
-    window.addEventListener('resize', centerElements);
-    
-    // Music control - Attempt to play immediately with reduced delay
+    // Music control
     let musicPlaying = false;
     
     // Try to play music with minimal delay
     setTimeout(playMusic, 100);
     
-    // But also provide manual control
+    // Provide manual control
     musicToggle.addEventListener("click", function() {
         if (musicPlaying) {
             bgMusic.pause();
@@ -123,14 +120,12 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // Function to play music with user interaction handling
     function playMusic() {
-        // Set volume to slightly lower level for better experience
         bgMusic.volume = 0.7;
         
         bgMusic.play().then(() => {
             musicToggle.textContent = "🎵";
             musicPlaying = true;
         }).catch(e => {
-            console.log("Audio autoplay failed, waiting for user interaction:", e);
             musicToggle.textContent = "🔇";
             
             // Add one-time event listener for first user interaction to enable audio
@@ -178,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    // Adjust candle positioning for better appearance
+    // Reposition candles for better appearance
     function repositionCandles() {
         const candles = document.querySelectorAll('.candle');
         const cakeTop = document.querySelector('.cake-top');
@@ -193,42 +188,46 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
     
-    // GSAP Animations - Faster and with improved timing
+    // GSAP Animations
     gsap.from(".card", {duration: 0.6, y: 30, opacity: 0, ease: "back.out(1.7)"});
-    gsap.from(".birthday-text", {duration: 0.7, delay: 0.2, scale: 0.5, opacity: 0, ease: "elastic.out(1, 0.5)"});
-    gsap.from(".message", {duration: 0.5, delay: 0.4, y: 20, opacity: 0});
-    gsap.from(".buttons", {duration: 0.5, delay: 0.6, y: 20, opacity: 0, stagger: 0.1});
+    gsap.from(".birthday-text", {duration: 0.7, scale: 0.5, opacity: 0, ease: "elastic.out(1, 0.5)"});
+    gsap.from(".message", {duration: 0.5, delay: 0.3, y: 20, opacity: 0});
+    gsap.from(".buttons", {duration: 0.5, delay: 0.5, y: 20, opacity: 0, stagger: 0.1});
     
-    // Animated cake elements - faster animations
-    gsap.from(".cake", {duration: 0.8, delay: 0.2, y: 30, opacity: 0, ease: "elastic.out(1, 0.5)"});
-    gsap.from(".cake-bottom", {duration: 0.5, delay: 0.3, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".cake-middle", {duration: 0.5, delay: 0.4, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)"});
-    gsap.from(".cake-top", {duration: 0.5, delay: 0.5, scaleY: 0, transformOrigin: "bottom", ease: "back.out(1.7)", onComplete: repositionCandles});
+    // Animated cake elements with dramatic entrance
+    gsap.from(".cake", {
+        duration: 1.2, 
+        y: -100, 
+        opacity: 0, 
+        ease: "bounce.out",
+        delay: 0.2,
+        onComplete: repositionCandles
+    });
     
-    // Animation for multiple candles
+    // Animation for candles
     const candles = document.querySelectorAll('.candle');
     candles.forEach((candle, index) => {
         gsap.from(candle, {
             duration: 0.4, 
-            delay: 0.6 + (index * 0.1),
+            delay: 1.5 + (index * 0.1),
             scaleY: 0, 
             transformOrigin: "bottom", 
             ease: "back.out(1.7)"
         });
     });
     
-    // Animation for flames
+    // Animation for flames with staggered appearance
     const flames = document.querySelectorAll('.flame');
     flames.forEach((flame, index) => {
         gsap.from(flame, {
             duration: 0.4, 
-            delay: 0.8 + (index * 0.1),
+            delay: 2 + (index * 0.2),
             scale: 0, 
             transformOrigin: "bottom", 
             ease: "back.out(1.7)"
         });
         
-        // Add perpetual random flicker to flames for more realism
+        // Add perpetual random flicker to flames
         gsap.to(flame, {
             duration: 0.3 + Math.random() * 0.5,
             scaleX: 0.8 + Math.random() * 0.4,
@@ -257,158 +256,4 @@ document.addEventListener("DOMContentLoaded", function() {
             confetti.style.width = `${size}px`;
             confetti.style.height = `${size}px`;
             confetti.style.left = `${left}px`;
-            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-            
-            document.body.appendChild(confetti);
-            
-            gsap.fromTo(confetti, 
-                {y: -20, x: 0, rotation: 0, opacity: 1},
-                {
-                    duration: Math.random() * 3 + 2,
-                    y: window.innerHeight + 100,
-                    x: left + (Math.random() * 200 - 100),
-                    rotation: Math.random() * 360,
-                    opacity: 0,
-                    ease: "power1.out",
-                    onComplete: function() {
-                        confetti.remove();
-                    }
-                }
-            );
-        }
-    }
-    
-    // Create initial animated balloons
-    function animateBalloons() {
-        const balloons = document.querySelectorAll('.balloon');
-        balloons.forEach((balloon, index) => {
-            const delay = index * 0.5; // Reduced staggered delay
-            const randomLeft = 10 + (index * 20) + (Math.random() * 5);
-            
-            balloon.style.left = `${randomLeft}%`;
-            
-            gsap.fromTo(balloon,
-                { y: '100vh', opacity: 0 },
-                { 
-                    y: '-100vh', 
-                    opacity: 0.8,
-                    duration: 10 + Math.random() * 5, // Faster animation
-                    delay: delay,
-                    ease: "power1.inOut",
-                    repeat: -1,
-                    onRepeat: function() {
-                        // Randomize horizontal position slightly on each repeat
-                        const newLeft = parseFloat(balloon.style.left) + (Math.random() * 6 - 3) + '%';
-                        balloon.style.left = newLeft;
-                    }
-                }
-            );
-        });
-    }
-    
-    // Initialize balloon animations
-    animateBalloons();
-    
-    // Create initial confetti animation with reduced delay
-    setTimeout(function() {
-        createConfetti();
-    }, 800);
-    
-    // Add window resize handler
-    window.addEventListener('resize', function() {
-        const canvas = document.getElementById("particles-js");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        // Reposition candles on resize
-        repositionCandles();
-        
-        // Recenter elements
-        centerElements();
-    });
-    
-    // Handle mobile responsiveness adjustments
-    function handleMobileResponsiveness() {
-        const isMobile = window.innerWidth <= 768;
-        
-        // Adjust cake size for mobile
-        const cake = document.querySelector('.cake');
-        if (cake) {
-            if (isMobile) {
-                cake.style.transform = 'scale(0.8)';
-            } else {
-                cake.style.transform = 'scale(1)';
-            }
-        }
-        
-        // Adjust balloon sizes for mobile
-        const balloons = document.querySelectorAll('.balloon');
-        balloons.forEach(balloon => {
-            if (isMobile) {
-                balloon.style.width = '40px';
-                balloon.style.height = '50px';
-            } else {
-                balloon.style.width = '60px';
-                balloon.style.height = '70px';
-            }
-        });
-        
-        // Adjust button layout for mobile
-        const buttons = document.querySelector('.buttons');
-        if (buttons) {
-            if (isMobile) {
-                buttons.style.flexDirection = 'column';
-                buttons.style.alignItems = 'center';
-            } else {
-                buttons.style.flexDirection = 'row';
-                buttons.style.alignItems = 'unset';
-            }
-        }
-    }
-    
-    // Run mobile responsiveness handler on load and resize
-    handleMobileResponsiveness();
-    window.addEventListener('resize', handleMobileResponsiveness);
-    
-    // Handle gift box animation in modal
-    function initGiftBoxAnimation() {
-        const giftLid = document.querySelector('.gift-lid');
-        
-        if (giftLid) {
-            giftLid.style.animation = 'none';
-            
-            // Reset and trigger animation when modal becomes visible
-            specialModal.addEventListener('transitionend', function() {
-                if (specialModal.classList.contains('active')) {
-                    giftLid.style.animation = 'openLid 4s forwards ease-in-out';
-                }
-            });
-        }
-    }
-    
-    // Initialize gift box animation
-    initGiftBoxAnimation();
-    
-    // Preload any images for smoother animations
-    function preloadImages() {
-        // No external images to preload in this implementation
-        // This function can be expanded if image assets are added later
-    }
-    
-    // Call preload function
-    preloadImages();
-    
-    // Handle closing modal with escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && specialModal.classList.contains('active')) {
-            specialModal.classList.remove('active');
-        }
-    });
-    
-    // Click outside modal to close
-    specialModal.addEventListener('click', function(e) {
-        if (e.target === specialModal) {
-            specialModal.classList.remove('active');
-        }
-    });
-});
+            confetti.style.borderRadius = Math.random() > 0.5
