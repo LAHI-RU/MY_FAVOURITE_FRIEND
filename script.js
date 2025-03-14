@@ -8,14 +8,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const specialModal = document.getElementById("specialModal");
     const closeModal = document.querySelector(".close-modal");
 
-    // Auto-play music (with user interaction handling)
+    // Set dark theme as default
+    document.body.setAttribute('data-theme', 'dark');
+
+    // Initialize audio
     function initializeAudio() {
         bgMusic.volume = 0.6;
         bgMusic.play().then(() => {
             musicToggle.textContent = "🎵";
         }).catch(e => {
             musicToggle.textContent = "🔇";
-            // Add one-time click event listener for music
+            // Add click event listener for music
             document.body.addEventListener('click', function enableAudio() {
                 bgMusic.play().then(() => {
                     musicToggle.textContent = "🎵";
@@ -28,6 +31,16 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initialize audio immediately
     initializeAudio();
 
+    // Theme Switcher
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    themeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            document.body.setAttribute('data-theme', button.dataset.theme);
+        });
+    });
+
     // Music Toggle
     musicToggle.addEventListener("click", function() {
         if (bgMusic.paused) {
@@ -39,66 +52,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Initialize particles.js
-    particlesJS("particles-js", {
-        "particles": {
-            "number": {
-                "value": 60,
-                "density": { "enable": true, "value_area": 800 }
-            },
-            "color": {
-                "value": ["#ff6fb7", "#a864fd", "#ffcc00", "#ffffff"]
-            },
-            "shape": {
-                "type": ["circle", "star"],
-                "stroke": { "width": 0 }
-            },
-            "opacity": {
-                "value": 0.7,
-                "random": true
-            },
-            "size": {
-                "value": 5,
-                "random": true
-            },
-            "move": {
-                "enable": true,
-                "speed": 2,
-                "direction": "none",
-                "random": true,
-                "straight": false,
-                "out_mode": "out",
-                "bounce": false
-            }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": {
-                "onhover": {
-                    "enable": true,
-                    "mode": "bubble"
-                },
-                "onclick": {
-                    "enable": true,
-                    "mode": "push"
-                }
-            },
-            "modes": {
-                "bubble": {
-                    "distance": 100,
-                    "size": 8,
-                    "duration": 2,
-                    "opacity": 0.8,
-                    "speed": 3
-                },
-                "push": {
-                    "particles_nb": 4
-                }
-            }
-        },
-        "retina_detect": true
-    });
-
     // Special Surprise Modal
     openBtn.addEventListener("click", function() {
         createConfetti();
@@ -107,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
             duration: 0.6,
             y: 30,
             opacity: 0,
-            ease: "back.out(1.7)"
+                        ease: "back.out(1.7)"
         });
     });
 
@@ -143,39 +96,89 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Initial Animations
-    function initialAnimation() {
-        gsap.from(".birthday-text", {
-            duration: 1,
-            scale: 0.5,
-            opacity: 0,
-            ease: "elastic.out(1, 0.5)",
-            delay: 0.5
-        });
-
-        gsap.from(".message", {
-            duration: 1,
-            y: 20,
-            opacity: 0,
-            ease: "power2.out",
-            delay: 1
-        });
-
-        gsap.from(".button-section", {
-            duration: 0.8,
-            y: 20,
-            opacity: 0,
-            ease: "power2.out",
-            delay: 1.5
-        });
-
-        createConfetti();
-    }
+    // Initialize particles.js
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 50,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": ["#ff71d4", "#9d4edd", "#ffd700"]
+            },
+            "shape": {
+                "type": ["circle", "star"],
+                "stroke": {
+                    "width": 0
+                }
+            },
+            "opacity": {
+                "value": 0.6,
+                "random": true,
+                "anim": {
+                    "enable": true,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 5,
+                "random": true
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#9d4edd",
+                "opacity": 0.2,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": true,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "bubble"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "bubble": {
+                    "distance": 150,
+                    "size": 8,
+                    "duration": 2,
+                    "opacity": 0.8,
+                    "speed": 3
+                },
+                "push": {
+                    "particles_nb": 3
+                }
+            }
+        },
+        "retina_detect": true
+    });
 
     // Confetti Effect
     function createConfetti() {
-        const colors = ['#ff6fb7', '#a864fd', '#ffcc00', '#ffffff', '#64c8ff'];
-        const totalConfetti = 100;
+        const colors = ['#ff71d4', '#9d4edd', '#ffd700', '#ffffff'];
+        const totalConfetti = window.innerWidth < 768 ? 50 : 100; // Reduce on mobile
 
         for (let i = 0; i < totalConfetti; i++) {
             const confetti = document.createElement('div');
@@ -195,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
                 z-index: 999;
                 pointer-events: none;
+                opacity: 0.8;
             `;
             
             document.body.appendChild(confetti);
@@ -205,13 +209,36 @@ document.addEventListener("DOMContentLoaded", function() {
                 rotation: Math.random() * 360,
                 duration: 2 + Math.random() * 2,
                 ease: "power1.out",
+                opacity: 0,
                 onComplete: () => confetti.remove()
             });
         }
     }
 
-    // Start initial animation
-    initialAnimation();
+    // Initial animations
+    gsap.from(".birthday-text", {
+        duration: 1,
+        scale: 0.5,
+        opacity: 0,
+        ease: "elastic.out(1, 0.5)",
+        onComplete: createConfetti
+    });
+
+    gsap.from(".message", {
+        duration: 1,
+        y: 20,
+        opacity: 0,
+        delay: 0.5,
+        ease: "power2.out"
+    });
+
+    gsap.from(".button-section", {
+        duration: 0.8,
+        y: 20,
+        opacity: 0,
+        delay: 1,
+        ease: "power2.out"
+    });
 
     // Handle visibility change
     document.addEventListener('visibilitychange', function() {
@@ -219,9 +246,29 @@ document.addEventListener("DOMContentLoaded", function() {
             bgMusic.pause();
         } else {
             if (musicToggle.textContent === "🎵") {
-                bgMusic.play();
+                bgMusic.play().catch(() => {});
             }
         }
+    });
+
+    // Mobile optimizations
+    if ('ontouchstart' in window) {
+        document.body.addEventListener('touchstart', function() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(() => {});
+            }
+        }, { once: true });
+    }
+
+    // Performance optimization for mobile
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.confetti').forEach(el => el.remove());
+            }
+        }, 250);
     });
 
     // Cleanup function
@@ -233,24 +280,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Cleanup before unload
     window.addEventListener('beforeunload', cleanup);
-
-    // Handle mobile touch events
-    if ('ontouchstart' in window) {
-        document.body.addEventListener('touchstart', function() {
-            if (bgMusic.paused) {
-                bgMusic.play().catch(() => {});
-            }
-        }, { once: true });
-    }
-
-    // Optimize performance for mobile
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        if (resizeTimer) clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            if (window.innerWidth <= 768) {
-                document.querySelectorAll('.confetti').forEach(el => el.remove());
-            }
-        }, 250);
-    });
 });

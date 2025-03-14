@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎀 A Special Message For You 🎀</title>
+    <style>
+        body {
+            background: #121212;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            padding: 30px;
+            background: rgba(255, 145, 199, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 145, 199, 0.2);
+        }
+        .heart {
+            color: #ff91c7;
+            font-size: 2em;
+            animation: pulse 1s infinite;
+        }
+        .code {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            margin: 20px 0;
+            color: #ff91c7;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .hint {
+            font-style: italic;
+            color: #b784fd;
+            margin-top: 20px;
+        }
+        button {
+            background: linear-gradient(45deg, #ff91c7, #b784fd);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+        button:hover {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="heart">💝</span>
+        <h1>Hey Kusali!</h1>
+        <p>I have a special surprise waiting for you...</p>
+        <p>To unlock your birthday surprise, you need this special code:</p>
+        <div class="code">KUSALI2025</div>
+        <p>Visit this link to find your surprise:</p>
+        <button onclick="window.location.href='YOUR_GITHUB_PAGES_URL'">
+            Find Your Surprise 🎁
+        </button>
+        <p class="hint">Hint: Keep the code handy, you'll need it! 💫</p>
+    </div>
+</body>
+</html>
