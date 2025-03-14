@@ -1,23 +1,57 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Initialize variables
+    const bgMusic = document.getElementById("bgMusic");
+    const musicToggle = document.getElementById("musicToggle");
+    const openBtn = document.getElementById("openBtn");
+    const memoryBtn = document.getElementById("memoryBtn");
+    const gallery = document.getElementById("gallery");
+    const specialModal = document.getElementById("specialModal");
+    const closeModal = document.querySelector(".close-modal");
+
+    // Auto-play music (with user interaction handling)
+    function initializeAudio() {
+        bgMusic.volume = 0.6;
+        bgMusic.play().then(() => {
+            musicToggle.textContent = "🎵";
+        }).catch(e => {
+            musicToggle.textContent = "🔇";
+            // Add one-time click event listener for music
+            document.body.addEventListener('click', function enableAudio() {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = "🎵";
+                });
+                document.body.removeEventListener('click', enableAudio);
+            }, { once: true });
+        });
+    }
+
+    // Initialize audio immediately
+    initializeAudio();
+
+    // Music Toggle
+    musicToggle.addEventListener("click", function() {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            musicToggle.textContent = "🎵";
+        } else {
+            bgMusic.pause();
+            musicToggle.textContent = "🔇";
+        }
+    });
+
     // Initialize particles.js
     particlesJS("particles-js", {
         "particles": {
             "number": {
                 "value": 60,
-                "density": {
-                    "enable": true,
-                    "value_area": 800
-                }
+                "density": { "enable": true, "value_area": 800 }
             },
             "color": {
                 "value": ["#ff6fb7", "#a864fd", "#ffcc00", "#ffffff"]
             },
             "shape": {
                 "type": ["circle", "star"],
-                "stroke": {
-                    "width": 0,
-                    "color": "#000000"
-                }
+                "stroke": { "width": 0 }
             },
             "opacity": {
                 "value": 0.7,
@@ -26,13 +60,6 @@ document.addEventListener("DOMContentLoaded", function() {
             "size": {
                 "value": 5,
                 "random": true
-            },
-            "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#ffffff",
-                "opacity": 0.2,
-                "width": 1
             },
             "move": {
                 "enable": true,
@@ -54,8 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 "onclick": {
                     "enable": true,
                     "mode": "push"
-                },
-                "resize": true
+                }
             },
             "modes": {
                 "bubble": {
@@ -72,161 +98,85 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         "retina_detect": true
     });
-    
-    // Elements
-    const bgMusic = document.getElementById("bgMusic");
-    const musicToggle = document.getElementById("musicToggle");
-    const openBtn = document.getElementById("openBtn");
-    const memoryBtn = document.getElementById("memoryBtn");
-    const gallery = document.getElementById("gallery");
-    const specialModal = document.getElementById("specialModal");
-    const closeModal = document.querySelector(".close-modal");
-    const card = document.querySelector(".card");
-    const birthdayText = document.querySelector(".birthday-text");
-    const giftBoxContainer = document.querySelector(".gift-box-container");
-    
-    // Center birthday text and card properly
-    function centerElements() {
-        // Ensure card is centered
-        const windowHeight = window.innerHeight;
-        const cardHeight = card.offsetHeight;
-        
-        if (windowHeight > cardHeight + 60) {
-            card.style.marginTop = Math.max(0, (windowHeight - cardHeight) / 2 - 30) + "px";
-        } else {
-            card.style.marginTop = "20px";
-        }
-        
-        // Ensure birthday text is properly centered
-        birthdayText.style.textAlign = "center";
-        birthdayText.style.width = "100%";
-        
-        // Adjust card content for better spacing
-        document.querySelector(".message").style.maxWidth = "90%";
-        document.querySelector(".message").style.margin = "20px auto";
-    }
-    
-    // Music control
-    let musicPlaying = false;
-    
-    // Try to play music with minimal delay
-    setTimeout(playMusic, 100);
-    
-    // Provide manual control
-    musicToggle.addEventListener("click", function() {
-        if (musicPlaying) {
-            bgMusic.pause();
-            musicToggle.textContent = "🔇";
-            musicPlaying = false;
-        } else {
-            playMusic();
-        }
-    });
-    
-    // Function to play music with user interaction handling
-    function playMusic() {
-        bgMusic.volume = 0.6;
-        
-        bgMusic.play().then(() => {
-            musicToggle.textContent = "🎵";
-            musicPlaying = true;
-        }).catch(e => {
-            musicToggle.textContent = "🔇";
-            
-            // Add one-time event listener for first user interaction to enable audio
-            document.body.addEventListener('click', function enableAudioOnFirstClick() {
-                if (!musicPlaying) {
-                    bgMusic.play().then(() => {
-                        musicToggle.textContent = "🎵";
-                        musicPlaying = true;
-                    });
-                }
-                document.body.removeEventListener('click', enableAudioOnFirstClick);
-            });
-        });
-    }
-    
-    // Surprise button
+
+    // Special Surprise Modal
     openBtn.addEventListener("click", function() {
         createConfetti();
         specialModal.classList.add("active");
-        
-        if (!musicPlaying) {
-            playMusic();
-        }
-        
-        // Simplify and shorten the modal content
-        const modalContent = document.querySelector(".modal-content p");
-        modalContent.innerHTML = `
-            Dear KUSALI,<br><br>
-            May your day be filled with joy and wonderful moments! 
-            Your kindness lights up everyone's lives.<br><br>
-            <span style="font-weight: bold; color: var(--primary);">With love & best wishes!</span>
-        `;
+        gsap.from(".surprise-content", {
+            duration: 0.6,
+            y: 30,
+            opacity: 0,
+            ease: "back.out(1.7)"
+        });
     });
-    
-    // Close modal
+
     closeModal.addEventListener("click", function() {
         specialModal.classList.remove("active");
     });
-    
-    // Memory button
+
+    // Close modal when clicking outside
+    specialModal.addEventListener("click", function(e) {
+        if (e.target === specialModal) {
+            specialModal.classList.remove("active");
+        }
+    });
+
+    // Memory Gallery Toggle
     memoryBtn.addEventListener("click", function() {
         if (gallery.style.display === "grid") {
-            gsap.to(gallery, {duration: 0.5, opacity: 0, onComplete: function() {
-                gallery.style.display = "none";
-            }});
-            memoryBtn.textContent = "Our Memories";
+            gsap.to(gallery, {
+                duration: 0.5,
+                opacity: 0,
+                onComplete: () => {
+                    gallery.style.display = "none";
+                }
+            });
+            memoryBtn.innerHTML = '<span class="btn-icon">📸</span><span class="btn-text">Our Memories</span>';
         } else {
             gallery.style.display = "grid";
-            gsap.fromTo(gallery, 
-                {opacity: 0, y: 20}, 
-                {duration: 0.5, opacity: 1, y: 0}
+            gsap.fromTo(gallery,
+                { opacity: 0, y: 20 },
+                { duration: 0.5, opacity: 1, y: 0 }
             );
-            memoryBtn.textContent = "Hide Memories";
+            memoryBtn.innerHTML = '<span class="btn-icon">📷</span><span class="btn-text">Hide Memories</span>';
         }
     });
-    
-    // GSAP Animations with improved timing and flow
-    gsap.from(".card", {duration: 0.6, y: 30, opacity: 0, ease: "back.out(1.7)"});
-    gsap.from(".birthday-text", {
-        duration: 0.8, 
-        scale: 0.5, 
-        opacity: 0, 
-        ease: "elastic.out(1, 0.5)", 
-        onComplete: function() {
-            // Add a subtle pulse animation to birthday text
-            gsap.to(".birthday-text", {
-                scale: 1.05,
-                duration: 1,
-                repeat: -1,
-                yoyo: true,
-                ease: "sine.inOut"
-            });
-        }
-    });
-    
-    // Simplify the message
-    const message = document.querySelector(".message");
-    message.innerHTML = 'Dear <span class="highlight">KUSALI</span>, on your special day, I celebrate you and all the joy you bring! Here\'s to your amazing journey ahead!';
-    
-    gsap.from(".message", {duration: 0.5, delay: 0.3, y: 20, opacity: 0});
-    gsap.from(".buttons", {duration: 0.5, delay: 0.5, y: 20, opacity: 0, stagger: 0.1});
-    
-    // Gift box animation
-    gsap.from(".gift-box-container", {
-        duration: 1.2, 
-        y: -100, 
-        opacity: 0, 
-        ease: "bounce.out",
-        delay: 0.2
-    });
-    
-    // Improved confetti function
+
+    // Initial Animations
+    function initialAnimation() {
+        gsap.from(".birthday-text", {
+            duration: 1,
+            scale: 0.5,
+            opacity: 0,
+            ease: "elastic.out(1, 0.5)",
+            delay: 0.5
+        });
+
+        gsap.from(".message", {
+            duration: 1,
+            y: 20,
+            opacity: 0,
+            ease: "power2.out",
+            delay: 1
+        });
+
+        gsap.from(".button-section", {
+            duration: 0.8,
+            y: 20,
+            opacity: 0,
+            ease: "power2.out",
+            delay: 1.5
+        });
+
+        createConfetti();
+    }
+
+    // Confetti Effect
     function createConfetti() {
         const colors = ['#ff6fb7', '#a864fd', '#ffcc00', '#ffffff', '#64c8ff'];
-        const totalConfetti = 150;
-        
+        const totalConfetti = 100;
+
         for (let i = 0; i < totalConfetti; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -235,14 +185,17 @@ document.addEventListener("DOMContentLoaded", function() {
             const size = Math.random() * 10 + 5;
             const left = Math.random() * window.innerWidth;
             
-            confetti.style.backgroundColor = color;
-            confetti.style.width = `${size}px`;
-            confetti.style.height = `${size}px`;
-            confetti.style.left = `${left}px`;
-            confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-            confetti.style.opacity = '1';
-            confetti.style.position = 'fixed';
-            confetti.style.top = '0';
+            confetti.style.cssText = `
+                background-color: ${color};
+                width: ${size}px;
+                height: ${size}px;
+                left: ${left}px;
+                top: -10px;
+                position: fixed;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                z-index: 999;
+                pointer-events: none;
+            `;
             
             document.body.appendChild(confetti);
             
@@ -250,58 +203,54 @@ document.addEventListener("DOMContentLoaded", function() {
                 y: window.innerHeight + 100,
                 x: left + (Math.random() * 200 - 100),
                 rotation: Math.random() * 360,
-                duration: 3 + Math.random() * 2,
+                duration: 2 + Math.random() * 2,
                 ease: "power1.out",
-                onComplete: function() {
-                    document.body.removeChild(confetti);
-                }
+                onComplete: () => confetti.remove()
             });
         }
     }
-    
-    // Ensure layout is responsive and elements are properly centered
-    window.addEventListener('resize', function() {
-        centerElements();
-    });
-    
-    // Initialize layout
-    centerElements();
-    
-    // Create a few confetti pieces on load for initial excitement
-    setTimeout(function() {
-        const startConfetti = 30;
-        for (let i = 0; i < startConfetti; i++) {
-            setTimeout(function() {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                
-                const colors = ['#ff6fb7', '#a864fd', '#ffcc00', '#ffffff', '#64c8ff'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const size = Math.random() * 8 + 4;
-                const left = Math.random() * window.innerWidth;
-                
-                confetti.style.backgroundColor = color;
-                confetti.style.width = `${size}px`;
-                confetti.style.height = `${size}px`;
-                confetti.style.left = `${left}px`;
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                confetti.style.opacity = '1';
-                confetti.style.position = 'fixed';
-                confetti.style.top = '0';
-                
-                document.body.appendChild(confetti);
-                
-                gsap.to(confetti, {
-                    y: window.innerHeight + 100,
-                    x: left + (Math.random() * 100 - 50),
-                    rotation: Math.random() * 360,
-                    duration: 2 + Math.random() * 1.5,
-                    ease: "power1.out",
-                    onComplete: function() {
-                        document.body.removeChild(confetti);
-                    }
-                });
-            }, i * 100);
+
+    // Start initial animation
+    initialAnimation();
+
+    // Handle visibility change
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            bgMusic.pause();
+        } else {
+            if (musicToggle.textContent === "🎵") {
+                bgMusic.play();
+            }
         }
-    }, 1000);
+    });
+
+    // Cleanup function
+    function cleanup() {
+        document.querySelectorAll('.confetti').forEach(el => el.remove());
+        bgMusic.pause();
+        gsap.killAll();
+    }
+
+    // Cleanup before unload
+    window.addEventListener('beforeunload', cleanup);
+
+    // Handle mobile touch events
+    if ('ontouchstart' in window) {
+        document.body.addEventListener('touchstart', function() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(() => {});
+            }
+        }, { once: true });
+    }
+
+    // Optimize performance for mobile
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.confetti').forEach(el => el.remove());
+            }
+        }, 250);
+    });
 });

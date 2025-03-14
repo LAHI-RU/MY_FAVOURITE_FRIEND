@@ -3,85 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HAPPY BIRTHDAY KUSALI!</title>
+    <title>Happy Birthday Kusali! 🎉</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
 </head>
 <body>
     <div id="particles-js"></div>
-    
-    <!-- Floating Balloons -->
-    <div class="balloons-container">
-        <div class="balloon" style="--color: #ff6fb7; --delay: 0s;"></div>
-        <div class="balloon" style="--color: #a864fd; --delay: 1s;"></div>
-        <div class="balloon" style="--color: #ffcc00; --delay: 2s;"></div>
-        <div class="balloon" style="--color: #64c8ff; --delay: 3s;"></div>
-        <div class="balloon" style="--color: #ff6347; --delay: 4s;"></div>
-    </div>
-    
-    <!-- Gift box animation as alternative to cake -->
-    <div class="gift-box-container">
-        <div class="gift-box">
-            <div class="gift-lid"></div>
-            <div class="gift-container"></div>
-            <div class="gift-ribbon-vertical"></div>
-            <div class="gift-ribbon-horizontal"></div>
+
+    <!-- Single Page Card Layout -->
+    <div class="main-container">
+        <div class="birthday-card">
+            <!-- Birthday Text and Message -->
+            <section class="card-header">
+                <h1 class="birthday-text">
+                    Happy Birthday
+                    <span class="name">Kusali!</span>
+                    <span class="birthday-emoji">🎉</span>
+                </h1>
+                
+                <div class="gift-box-container">
+                    <div class="gift-box">
+                        <div class="gift-lid"></div>
+                        <div class="gift-container"></div>
+                        <div class="gift-ribbon-vertical"></div>
+                        <div class="gift-ribbon-horizontal"></div>
+                    </div>
+                </div>
+
+                <div class="message-section">
+                    <p class="message">Dear Kusali, on your special day, I celebrate you and all the joy you bring! May your day be filled with happiness and love! 💖</p>
+                </div>
+            </section>
+
+            <!-- Interactive Buttons -->
+            <section class="button-section">
+                <button id="openBtn" class="btn primary-btn">
+                    <span class="btn-icon">🎁</span>
+                    <span class="btn-text">Special Surprise</span>
+                </button>
+                <button id="memoryBtn" class="btn secondary-btn">
+                    <span class="btn-icon">📸</span>
+                    <span class="btn-text">Our Memories</span>
+                </button>
+            </section>
+
+            <!-- Memory Gallery -->
+            <section class="gallery-section">
+                <div id="gallery" class="gallery">
+                    <div class="gallery-item">
+                        <img src="memory1.jpg" alt="Special Memory 1" loading="lazy">
+                        <div class="gallery-caption">Our First Memory</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="memory2.jpg" alt="Special Memory 2" loading="lazy">
+                        <div class="gallery-caption">Happy Times</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="memory3.jpg" alt="Special Memory 3" loading="lazy">
+                        <div class="gallery-caption">Beautiful Moments</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="memory4.jpg" alt="Special Memory 4" loading="lazy">
+                        <div class="gallery-caption">Unforgettable Day</div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-    
-    <div class="container">
-        <div class="card">
-            <h1 class="birthday-text">
-                HAPPY BIRTHDAY KUSALI!
-                <span class="birthday-emoji">🎉</span>
-            </h1>
-            
-            <p class="message">
-                Dear <span class="highlight">KUSALI</span>, on your special day, I celebrate the amazing person you are and all the joy you bring to my life. You're my greatest treasure!
-            </p>
-            
-            <div class="buttons">
-                <button id="openBtn" class="btn primary-btn">Special Surprise</button>
-                <button id="memoryBtn" class="btn secondary-btn">Our Memories</button>
-            </div>
-            
-            <div id="gallery" class="gallery">
-                <div class="gallery-img">Memory Placeholder 1</div>
-                <div class="gallery-img">Memory Placeholder 2</div>
-                <div class="gallery-img">Memory Placeholder 3</div>
-                <div class="gallery-img">Memory Placeholder 4</div>
-            </div>
-        </div>
-    </div>
-    
+
+    <!-- Special Surprise Modal -->
     <div id="specialModal" class="modal">
         <div class="modal-content">
             <button class="close-modal">&times;</button>
-            <h2 style="color: var(--primary); font-size: 2em; margin-bottom: 20px;">✨ My Special Wish ✨</h2>
-            
-            <!-- Gift box animation in modal -->
-            <div class="gift-box">
-                <div class="gift-lid"></div>
-                <div class="gift-container"></div>
-                <div class="gift-ribbon-vertical"></div>
-                <div class="gift-ribbon-horizontal"></div>
+            <div class="surprise-content">
+                <h2 class="surprise-title">✨ My Special Wish For You ✨</h2>
+                <div class="surprise-image-container">
+                    <img src="special.jpg" alt="Special Birthday Moment" class="surprise-image">
+                </div>
+                <div class="surprise-message">
+                    <p class="surprise-text">Dearest Kusali,</p>
+                    <p>On this wonderful day, I want to celebrate the amazing person you are. Your kindness, your smile, and your friendship make the world a better place.</p>
+                    <p>May this year bring you endless joy, success, and countless beautiful moments!</p>
+                    <p class="surprise-signature">With love and warmest wishes ❤️</p>
+                </div>
             </div>
-            
-            <p style="font-size: 1.2em; line-height: 1.6;">
-                Dear KUSALI,<br><br>
-                May this new year bring you all the happiness, success, and beautiful moments you deserve. Your kindness and warmth make every day brighter. I'm so grateful to celebrate with you!<br><br>
-                <span style="font-weight: bold; color: var(--primary);">With all my love,</span>
-            </p>
         </div>
     </div>
-    
-    <div class="music-controls" id="musicToggle">🎵</div>
-    
+
+    <!-- Music Control (Hidden but functional) -->
+    <div class="music-controls" id="musicToggle">
+        <span class="music-icon">🎵</span>
+    </div>
     <audio id="bgMusic" src="birthday_song.mp3" loop></audio>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
