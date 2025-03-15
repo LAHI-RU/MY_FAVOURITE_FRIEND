@@ -24,19 +24,20 @@
             display: flex;
             justify-content: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
         .gift-box {
             position: relative;
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             background: #ff91c7;
             border-radius: 10px;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
         }
         .gift-box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 145, 199, 0.6);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 145, 199, 0.6);
         }
         .gift-box img {
             width: 100%;
@@ -51,7 +52,7 @@
         .gift-name {
             display: none;
             margin-top: 10px;
-            font-size: 1.2em;
+            font-size: 1.4em;
             font-family: 'Dancing Script', cursive;
             color: #ff91c7;
             animation: fadeInUp 0.8s ease-in-out forwards;
@@ -77,6 +78,24 @@
             to {
                 transform: translateY(0);
                 opacity: 1;
+            }
+        }
+        @media (max-width: 768px) {
+            .gift-box {
+                width: 150px;
+                height: 150px;
+            }
+            .gift-name {
+                font-size: 1.2em;
+            }
+        }
+        @media (max-width: 480px) {
+            .gift-box {
+                width: 120px;
+                height: 120px;
+            }
+            .gift-name {
+                font-size: 1em;
             }
         }
     </style>

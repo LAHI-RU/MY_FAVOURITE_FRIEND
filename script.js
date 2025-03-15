@@ -12,10 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initialize audio
     function initializeAudio() {
-        const bgMusicTime = localStorage.getItem('bgMusicTime');
-        if (bgMusicTime) {
-            bgMusic.currentTime = bgMusicTime;
-        }
+        bgMusic.currentTime = 0;  // Start from the beginning each time
         bgMusic.volume = 0.6;
         bgMusic.play().then(() => {
             musicToggle.textContent = "🎵";
@@ -266,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Cleanup function
     function cleanup() {
         document.querySelectorAll('.confetti').forEach(el => el.remove());
-        localStorage.setItem('bgMusicTime', bgMusic.currentTime);
         bgMusic.pause();
         gsap.killAll();
     }
