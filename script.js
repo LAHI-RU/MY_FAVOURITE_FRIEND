@@ -14,16 +14,20 @@ document.addEventListener("DOMContentLoaded", function() {
     function initializeAudio() {
         bgMusic.currentTime = 0;  // Start from the beginning each time
         bgMusic.volume = 0.6;
-
-        // Add click event listener to start the music on user interaction
-        document.body.addEventListener('click', function enableAudio() {
-            bgMusic.play().then(() => {
-                musicToggle.textContent = "🎵";
-            }).catch(e => {
-                musicToggle.textContent = "🔇";
-            });
-            document.body.removeEventListener('click', enableAudio);
-        }, { once: true });
+        bgMusic.play().then(() => {
+            musicToggle.textContent = "🎵";
+        }).catch(e => {
+            musicToggle.textContent = "🔇";
+            // Add click event listener for music
+            document.body.addEventListener('click', function enableAudio() {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = "🎵";
+                }).catch(e => {
+                    console.error("Unable to play music:", e);
+                });
+                document.body.removeEventListener('click', enableAudio);
+            }, { once: true });
+        });
 
         // Store the background music in localStorage
         localStorage.setItem('bgMusic', bgMusic.src);
@@ -45,8 +49,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Music Toggle
     musicToggle.addEventListener("click", function() {
         if (bgMusic.paused) {
-            bgMusic.play();
-            musicToggle.textContent = "🎵";
+            bgMusic.play().then(() => {
+                musicToggle.textContent = "🎵";
+            }).catch(e => {
+                console.error("Unable to play music:", e);
+            });
         } else {
             bgMusic.pause();
             musicToggle.textContent = "🔇";
