@@ -14,18 +14,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function initializeAudio() {
         bgMusic.currentTime = 0;  // Start from the beginning each time
         bgMusic.volume = 0.6;
-        bgMusic.play().then(() => {
-            musicToggle.textContent = "🎵";
-        }).catch(e => {
-            musicToggle.textContent = "🔇";
-            // Add click event listener for music
-            document.body.addEventListener('click', function enableAudio() {
-                bgMusic.play().then(() => {
-                    musicToggle.textContent = "🎵";
-                });
-                document.body.removeEventListener('click', enableAudio);
-            }, { once: true });
-        });
+
+        // Add click event listener to start the music on user interaction
+        document.body.addEventListener('click', function enableAudio() {
+            bgMusic.play().then(() => {
+                musicToggle.textContent = "🎵";
+            }).catch(e => {
+                musicToggle.textContent = "🔇";
+            });
+            document.body.removeEventListener('click', enableAudio);
+        }, { once: true });
 
         // Store the background music in localStorage
         localStorage.setItem('bgMusic', bgMusic.src);
