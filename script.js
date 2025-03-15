@@ -3,17 +3,19 @@ document.addEventListener("DOMContentLoaded", function() {
     const bgMusic = document.getElementById("bgMusic");
     const musicToggle = document.getElementById("musicToggle");
     const openBtn = document.getElementById("openBtn");
-    const memoryBtn = document.getElementById("memoryBtn");
-    const gallery = document.getElementById("gallery");
+    const giftBtn = document.getElementById("giftBtn");
     const specialModal = document.getElementById("specialModal");
     const closeModal = document.querySelector(".close-modal");
-    const giftBtn = document.getElementById("giftBtn");
 
     // Set dark theme as default
     document.body.setAttribute('data-theme', 'dark');
 
     // Initialize audio
     function initializeAudio() {
+        const bgMusicTime = localStorage.getItem('bgMusicTime');
+        if (bgMusicTime) {
+            bgMusic.currentTime = bgMusicTime;
+        }
         bgMusic.volume = 0.6;
         bgMusic.play().then(() => {
             musicToggle.textContent = "🎵";
@@ -27,6 +29,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.body.removeEventListener('click', enableAudio);
             }, { once: true });
         });
+
+        // Store the background music in localStorage
+        localStorage.setItem('bgMusic', bgMusic.src);
     }
 
     // Initialize audio immediately
@@ -76,29 +81,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Memory Gallery Toggle
-    memoryBtn.addEventListener("click", function() {
-        if (gallery.style.display === "grid") {
-            gsap.to(gallery, {
-                duration: 0.5,
-                opacity: 0,
-                onComplete: () => {
-                    gallery.style.display = "none";
-                }
-            });
-            memoryBtn.innerHTML = '<span class="btn-icon">📸</span><span class="btn-text">Our Memories</span>';
-        } else {
-            gallery.style.display = "grid";
-            gsap.fromTo(gallery,
-                { opacity: 0, y: 20 },
-                { duration: 0.5, opacity: 1, y: 0 }
-            );
-            memoryBtn.innerHTML = '<span class="btn-icon">📷</span><span class="btn-text">Hide Memories</span>';
-        }
-    });
-
     // Gift Button
     giftBtn.addEventListener("click", function() {
+        // Store the current time of the music before navigating
+        localStorage.setItem('bgMusicTime', bgMusic.currentTime);
         window.location.href = 'select_gift.html';
     });
 
@@ -280,6 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Cleanup function
     function cleanup() {
         document.querySelectorAll('.confetti').forEach(el => el.remove());
+        localStorage.setItem('bgMusicTime', bgMusic.currentTime);
         bgMusic.pause();
         gsap.killAll();
     }
