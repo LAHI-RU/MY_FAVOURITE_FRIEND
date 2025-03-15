@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Select Your Gift</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #121212;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .gift-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gift-box {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            background: #ff91c7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .gift-box:hover {
+            transform: scale(1.05);
+        }
+        .gift-box img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: none;
+        }
+        .gift-box.selected img {
+            display: block;
+        }
+        .gift-box.selected .gift-lid,
+        .gift-box.selected .gift-container,
+        .gift-box.selected .gift-ribbon-vertical,
+        .gift-box.selected .gift-ribbon-horizontal {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎁 Select Your Gift 🎁</h1>
+    <div class="gift-selection">
+        <div class="gift-box" onclick="revealGift(this, 'chocolate1.jpg')">
+            <div class="gift-lid"></div>
+            <div class="gift-container"></div>
+            <div class="gift-ribbon-vertical"></div>
+            <div class="gift-ribbon-horizontal"></div>
+            <img src="chocolate1.jpg" alt="Chocolate 1">
+        </div>
+        <div class="gift-box" onclick="revealGift(this, 'chocolate2.jpg')">
+            <div class="gift-lid"></div>
+            <div class="gift-container"></div>
+            <div class="gift-ribbon-vertical"></div>
+            <div class="gift-ribbon-horizontal"></div>
+            <img src="chocolate2.jpg" alt="Chocolate 2">
+        </div>
+        <div class="gift-box" onclick="revealGift(this, 'chocolate3.jpg')">
+            <div class="gift-lid"></div>
+            <div class="gift-container"></div>
+            <div class="gift-ribbon-vertical"></div>
+            <div class="gift-ribbon-horizontal"></div>
+            <img src="chocolate3.jpg" alt="Chocolate 3">
+        </div>
+    </div>
+    <script>
+        function revealGift(element, imgSrc) {
+            // Hide all other boxes
+            document.querySelectorAll('.gift-box').forEach(box => {
+                if (box !== element) {
+                    box.style.display = 'none';
+                }
+            });
+
+            // Reveal the selected gift
+            element.classList.add('selected');
+            element.querySelector('img').src = imgSrc;
+
+            // Redirect back to previous page after a delay
+            setTimeout(() => {
+                window.location.href = 'birthday.html';
+            }, 3000); // 3 seconds delay
+        }
+    </script>
+</body>
+</html>

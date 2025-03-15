@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const gallery = document.getElementById("gallery");
     const specialModal = document.getElementById("specialModal");
     const closeModal = document.querySelector(".close-modal");
+    const giftBtn = document.getElementById("giftBtn");
 
     // Set dark theme as default
     document.body.setAttribute('data-theme', 'dark');
@@ -60,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
             duration: 0.6,
             y: 30,
             opacity: 0,
-                        ease: "back.out(1.7)"
+            ease: "back.out(1.7)"
         });
     });
 
@@ -94,6 +95,11 @@ document.addEventListener("DOMContentLoaded", function() {
             );
             memoryBtn.innerHTML = '<span class="btn-icon">📷</span><span class="btn-text">Hide Memories</span>';
         }
+    });
+
+    // Gift Button
+    giftBtn.addEventListener("click", function() {
+        window.location.href = 'select_gift.html';
     });
 
     // Initialize particles.js
