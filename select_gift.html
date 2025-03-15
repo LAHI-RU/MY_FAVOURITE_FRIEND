@@ -25,6 +25,7 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
+            padding: 20px; /* Added padding */
         }
         .gift-box {
             position: relative;
@@ -34,6 +35,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px; /* Added margin */
         }
         .gift-box:hover {
             transform: scale(1.1);
@@ -98,13 +100,17 @@
                 font-size: 1em;
             }
         }
+        .btn-lock {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <h1>🎁 Select Your Gift 🎁</h1>
     <div class="gift-selection">
         <div class="gift-container">
-            <div class="gift-box" onclick="revealGift(this, 'chocolate.jpg')">
+            <div class="gift-box" onclick="revealGift(this, 'chocolate1.jpg')">
                 <div class="gift-lid"></div>
                 <div class="gift-container"></div>
                 <div class="gift-ribbon-vertical"></div>
@@ -134,8 +140,13 @@
             <div class="gift-name">Tasty Chocolate</div>
         </div>
     </div>
+    <button id="lockBtn" class="btn">Select Your Gift</button>
     <script>
+        let giftSelected = false;
+
         function revealGift(element, imgSrc) {
+            if (giftSelected) return;
+
             // Hide all other boxes
             document.querySelectorAll('.gift-box').forEach(box => {
                 if (box !== element) {
@@ -146,6 +157,14 @@
             // Reveal the selected gift
             element.classList.add('selected');
             element.querySelector('img').src = imgSrc;
+
+            // Disable the button and provide feedback
+            const lockBtn = document.getElementById('lockBtn');
+            lockBtn.textContent = 'Gift Selected 🎁';
+            lockBtn.classList.add('btn-lock');
+            lockBtn.disabled = true;
+
+            giftSelected = true;
 
             // Redirect back to previous page after a delay
             setTimeout(() => {
